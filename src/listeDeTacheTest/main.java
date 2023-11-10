@@ -1,44 +1,36 @@
 package listeDeTacheTest;
 
 public class main {
-	private static int nbCaracteresMin = 3;
-	private static int nbCaracteresMax = 80;
-	private static int compteTaches = 0;
-	public static int nbmax = 0;
-	public static int nbmin = 1;
-	private static int tacheASupprimer;
-	private static String repVider;
-	private static String tacheLue;
 
-	private static String msgMenu = "----" + "\nMENU\n" + "----\n" + "1. Afficher liste\n" + "2. Ajouter tache(s)\n"
-			+ "3. Supprimer taches\n" + "4. Vider liste\n" + "5. Quitter le programme\n";
-	private static String msgFinProg = "\n\nF I N   N O R M A L E   D U   P R O G R A M M E\n";
-	private static String listeTaches = ""; // déclarer à l'extérieur des méthodes pour conserver son état
-	private static String revenirAuMenu = "\nAppuyez sur <ENTREE> pour revenir au menu... \n";
-	private static String msgAccueilTache = "\n-- AJOUTER TACHE(S) --\n";
-	private static String msgAjoutTache = "Tache a ajouter (<ENTREE> pour terminer): ";
-	private static String msgErrTache = "Erreur, la tache doit contenir entre 3 et 80 caracteres inclusivement... Recommencez !";
-	private static String msgSoll = "Entrez votre choix : ";
-	private static String msgErr = "Erreur, choix du menu invalide... Recommencez!";
-	private static String msgListeVide = "===============\n" + "CHOSES A FAIRE\n" + "===============\n"
-			+ "AUCUN ITEM DANS LA LISTE";
-	private static String msgViderListe = "\n-- VIDER LA LISTE --\n" + "\n" + "AUCUN ITEM DANS LA LISTE";
-	private static String msgChosesAFaire = "\n===============\n" + "CHOSES A FAIRE\n" + "===============\n";
-	private static String msgSuppTache = "\n-- SUPPRIMER TACHE(S) --\n";
-	private static String msgTacheASupp = "Numero de la tache a supprimer (<ENTREE> pour terminer) :";
-	private static String msgAucunItem = "AUCUN ITEM DANS LA LISTE\n";
-	private static String msgVerifVider = "Voulez-vous vraiment vider la liste (O)ui ou (N)on ? \n";
-	private static String msgErrVider = "Erreur, vous devez repondre par O ou N... Recommencez !\n";
-	private static String msgOppAnn = "Operation annulee.\n";
-	private static String msgListeVidee = "Tous les items ont ete supprimes de la liste.\n";
+	public static void messageErreur() {
+		String msgErr = "Erreur, choix du menu invalide... Recommencez!";
+		System.out.println(msgErr);
+	}
 
-	// Cette méthode affiche le menu principal
+	public static void messageSollicitation() {
+		String msgSoll = "Entrez votre choix : ";
+		System.out.println(msgSoll);
+	}
+
+	public static void revenirAuMenu() {
+		String revenirAuMenu = "\nAppuyez sur <ENTREE> pour revenir au menu... \n";
+		System.out.println(revenirAuMenu);
+	}
+
 	public static void afficherMenu() {
+		String msgMenu = "----" + "\nMENU\n" + "----\n" + "1. Afficher liste\n" + "2. Ajouter tache(s)\n"
+				+ "3. Supprimer taches\n" + "4. Vider liste\n" + "5. Quitter le programme\n";
 		System.out.println(msgMenu);
 	}
 
 	// Cette méthode permet d'ajouter des tâches
-	public static String ajouterTache() {
+	public static String ajouterTache(String liste, int compte) {
+		String msgAjoutTache = "Tache a ajouter (<ENTREE> pour terminer): ";
+		String msgAccueilTache = "\n-- AJOUTER TACHE(S) --\n";
+		String msgErrTache = "Erreur, la tache doit contenir entre 3 et 80 caracteres inclusivement... Recommencez !";
+		String tacheLue;
+		int nbCaracteresMin = 3;
+		int nbCaracteresMax = 80;
 		boolean finAjoutTache = false;
 		System.out.println(msgAccueilTache);
 		while (!(finAjoutTache)) {
@@ -47,33 +39,60 @@ public class main {
 			if (tacheLue.equals("")) { // si ce que l'utilisateur entre est nul, finir d'ajouter des tâches
 				finAjoutTache = true;
 			} else if (tacheLue.length() >= nbCaracteresMin && tacheLue.length() <= nbCaracteresMax && tacheLue != "") {
-				compteTaches++;
-				listeTaches += compteTaches + ". " + tacheLue + "\n";
+				compte++;
+				liste += compte + ". " + tacheLue + "\n";
 			} else {
 				System.out.println(msgErrTache);
 			}
 		} // while (finAjoutTache)
-		return listeTaches;
+		return liste;
 	}
 
-	static void afficherListe() {
-		if (listeTaches.equals("")) {
+	static void afficherListe(String liste) {
+		String msgListeVide = "===============\n" + "CHOSES A FAIRE\n" + "===============\n"
+				+ "AUCUN ITEM DANS LA LISTE";
+		String msgChosesAFaire = "\n===============\n" + "CHOSES A FAIRE\n" + "===============\n";
+
+		if (liste.equals("")) {
 			System.out.println(msgListeVide);
 		} else {
 			System.out.println(msgChosesAFaire);
-			System.out.println(listeTaches);
+			System.out.println(liste);
 		}
-		System.out.println(revenirAuMenu);
+		revenirAuMenu();
 		Clavier.lireString();
 	} // afficherListe
 
-	public static void supprimerTaches() {
-		System.out.println(msgSuppTache + msgChosesAFaire + listeTaches);
+	public static String supprimerTaches(String liste, int compte) {
+		String msgChosesAFaire = "\n===============\n" + "CHOSES A FAIRE\n" + "===============\n";
+		String msgTacheASupp = "Numero de la tache a supprimer (<ENTREE> pour terminer) :";
+		String msgSuppTache = "\n-- SUPPRIMER TACHE(S) --\n";
+		String msgAucunItem = "AUCUN ITEM DANS LA LISTE\n";
+		int nbmax = 0;
+		int nbmin = 1;
+		int tacheASupprimer;
+
+		System.out.println(msgSuppTache + msgChosesAFaire + liste);
+		//TODO trouver comment lire combien de tâches l'utilisateur entre, les classer par numero 
 		boolean tacheValide = false;
+		int index1 = liste.indexOf('1');
+		int index2 =liste.indexOf('2');
+		int index3 = liste.indexOf('3');
+		int index4 = liste.indexOf('4');
+		String substring1 = liste.substring(index1, index2);
+		String substring2 = liste.substring(index2, index3);
+		String substring3 = liste.substring(index3, index4);
+		String substring4 = liste.substring(index4);
+
+		substring1 = "";
+		liste = substring2 +  substring3 +  substring4;
+		System.out.println(liste);
 		while (!tacheValide) {
-			nbmax += compteTaches;
-			if (listeTaches == "") {
-				System.out.println(msgAucunItem + revenirAuMenu);
+
+			nbmax += compte;
+			if (liste == "") {
+				System.out.println(msgAucunItem);
+				revenirAuMenu();
 				Clavier.lireString();
 				break;
 			} else {
@@ -83,27 +102,34 @@ public class main {
 					System.out.println(
 							"Erreur, le numero doit etre entre " + nbmin + " et " + nbmax + "... Recommencez !\n");
 				} else {
-					System.out.println("MONTRER LA LISTE SANS LE NUMERO SÉLECTIONNÉ"); // TODO
-					tacheValide = true;
-					System.out.println(revenirAuMenu);
-					Clavier.lireString();
+					System.out.println("CODEBLAAAA");
 				}
-			} // while tache valide
-		} // else pas vide
+				tacheValide = true;
+				revenirAuMenu();
+				Clavier.lireString();
+			}
+		} // while tache valide
+		return liste;
 	} // supprimerTache
 
-	public static void viderListe() {
+	public static String viderListe(String liste) {
+		String repVider;
+		String msgViderListe = "\n-- VIDER LA LISTE --\n" + "\n" + "AUCUN ITEM DANS LA LISTE";
+		String msgVerifVider = "Voulez-vous vraiment vider la liste (O)ui ou (N)on ? \n";
+		String msgErrVider = "Erreur, vous devez repondre par O ou N... Recommencez !\n";
+		String msgOppAnn = "Operation annulee.\n";
+		String msgListeVidee = "Tous les items ont ete supprimes de la liste.\n";
+
 		boolean fini = false;
 		while (!fini) {
-			if (listeTaches == "") {
+			if (liste == "") {
 				System.out.println(msgViderListe);
-				listeTaches = "";
 				fini = true;
 			} else {
 				System.out.println(msgVerifVider);
 				repVider = Clavier.lireString();
 				if (repVider.equalsIgnoreCase("o")) {
-					listeTaches = "";
+					liste = "";
 					System.out.println(msgListeVidee);
 					fini = true;
 				} else if (repVider.equalsIgnoreCase("n")) {
@@ -114,41 +140,47 @@ public class main {
 				} // else pas valide
 			} // else liste pas vide
 		} // while liste Remplie
-		System.out.println(revenirAuMenu);
+		revenirAuMenu();
 		Clavier.lireString();
+		return liste;
 	} // viderListe
 
 	public static void quitterProgramme() {
+		String msgFinProg = "\n\nF I N   N O R M A L E   D U   P R O G R A M M E\n";
 		System.out.println(msgFinProg);
 	} // quitterProgramme
 
 	public static void main(String[] args) {
+		String listeTaches = "";
+		int compteTaches = 0;
+
 		boolean finDuProgramme = false;
 		while (!finDuProgramme) {
 			afficherMenu();
 			char choixMenuLu;
-			System.out.print(msgSoll);
+			messageSollicitation();
 			choixMenuLu = Clavier.lireCharLn();
 			// Faire une action selon le choix
 			switch (choixMenuLu) {
 			case '1':
-				afficherListe();
+				afficherListe(listeTaches);
 				break;
 			case '2':
-				listeTaches = ajouterTache(); // retourner une nouvelle version de listeTache après modification
+				listeTaches = ajouterTache(listeTaches, compteTaches); // retourner une nouvelle version de listeTache
+																		// après modification
 				break;
 			case '3':
-				supprimerTaches();
+				listeTaches = supprimerTaches(listeTaches, compteTaches);
 				break;
 			case '4':
-				viderListe();
+				listeTaches = viderListe(listeTaches);
 				break;
 			case '5':
 				quitterProgramme();
 				finDuProgramme = true;
 				break;
 			default:
-				System.out.println(msgErr);
+				messageErreur();
 			}// switch choixMenuLu
 		} // while fin du programme
 	} // main

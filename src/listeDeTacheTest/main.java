@@ -12,7 +12,7 @@ public class main {
 		System.out.println(msgSoll);
 	}
 
-	public static void revenirAuMenu() {
+	public static void texteRevenirAuMenu() {
 		String revenirAuMenu = "\nAppuyez sur <ENTREE> pour revenir au menu... \n";
 		System.out.println(revenirAuMenu);
 	}
@@ -46,6 +46,7 @@ public class main {
 			}
 		} // while (finAjoutTache)
 		return liste;
+
 	}
 
 	static void afficherListe(String liste) {
@@ -59,58 +60,76 @@ public class main {
 			System.out.println(msgChosesAFaire);
 			System.out.println(liste);
 		}
-		revenirAuMenu();
+		texteRevenirAuMenu();
 		Clavier.lireString();
 	} // afficherListe
 
-	public static String supprimerTaches(String liste, int compte) {
+	public static String supprimerTaches(String liste) {
+		String msgAucunItem = "AUCUN ITEM DANS LA LISTE\n";
+		if (liste == "") {
+			System.out.println(msgAucunItem);
+			texteRevenirAuMenu();
+			Clavier.lireString();
+			return liste;
+		}
+
 		String msgChosesAFaire = "\n===============\n" + "CHOSES A FAIRE\n" + "===============\n";
 		String msgTacheASupp = "Numero de la tache a supprimer (<ENTREE> pour terminer) :";
 		String msgSuppTache = "\n-- SUPPRIMER TACHE(S) --\n";
-		String msgAucunItem = "AUCUN ITEM DANS LA LISTE\n";
-		int nbmax = 0;
+
+		int nbmax = 10000;
 		int nbmin = 1;
-		int tacheASupprimer;
+		int debut1;
+		int fin1;
+		int debut2;
+		int fin2;
+		String tacheASupprimer;
+		String substring1;
+		String substring2;
+		boolean fin = false;
 
 		System.out.println(msgSuppTache + msgChosesAFaire + liste);
-		//TODO trouver comment lire combien de tâches l'utilisateur entre, les classer par numero 
-		boolean tacheValide = false;
-		int index1 = liste.indexOf('1');
-		int index2 =liste.indexOf('2');
-		int index3 = liste.indexOf('3');
-		int index4 = liste.indexOf('4');
-		String substring1 = liste.substring(index1, index2);
-		String substring2 = liste.substring(index2, index3);
-		String substring3 = liste.substring(index3, index4);
-		String substring4 = liste.substring(index4);
 
-		substring1 = "";
-		liste = substring2 +  substring3 +  substring4;
-		System.out.println(liste);
-		while (!tacheValide) {
+		while (!fin) {
+			System.out.println(msgTacheASupp);
+			tacheASupprimer = Clavier.lireString();
 
-			nbmax += compte;
-			if (liste == "") {
-				System.out.println(msgAucunItem);
-				revenirAuMenu();
-				Clavier.lireString();
+			if (tacheASupprimer == "") {
+				fin = false;
 				break;
-			} else {
-				System.out.println(msgTacheASupp);
-				tacheASupprimer = Clavier.lireInt();
-				if (tacheASupprimer < nbmin || tacheASupprimer > nbmax) {
-					System.out.println(
-							"Erreur, le numero doit etre entre " + nbmin + " et " + nbmax + "... Recommencez !\n");
-				} else {
-					System.out.println("CODEBLAAAA");
-				}
-				tacheValide = true;
-				revenirAuMenu();
-				Clavier.lireString();
 			}
-		} // while tache valide
+
+			else if ((!tacheASupprimer.contains("1") && !tacheASupprimer.contains("2") && !tacheASupprimer.contains("3")
+					&& !tacheASupprimer.contains("4") && !tacheASupprimer.contains("5")
+					&& !tacheASupprimer.contains("6") && !tacheASupprimer.contains("7")
+					&& !tacheASupprimer.contains("8") && !tacheASupprimer.contains("9"))) {
+				System.out
+						.println("Erreur, le numero doit etre entre " + nbmin + " et " + nbmax + "... Recommencez !\n");
+			} else {
+				int int1 = Integer.parseInt(tacheASupprimer);
+				int1++;
+				String int1Format = "" + int1;
+
+				if (liste.contains(int1Format)) {
+					debut1 = liste.indexOf("1");
+					fin1 = liste.indexOf(tacheASupprimer);
+					debut2 = liste.indexOf(int1Format);
+					fin2 = liste.lastIndexOf("\n");
+					substring1 = liste.substring(debut1, fin1);
+					substring2 = liste.substring(debut2, fin2);
+					System.out.println("Liste updated: \n" + substring1 + substring2);
+				} else {
+					debut1 = liste.indexOf("1");
+					fin1 = liste.indexOf(tacheASupprimer);
+					substring1 = liste.substring(debut1, fin1);
+					System.out.println("Liste updated: \n" + substring1);
+				}
+			}
+			
+		}
 		return liste;
-	} // supprimerTache
+
+	}// supprimerTache
 
 	public static String viderListe(String liste) {
 		String repVider;
@@ -140,7 +159,7 @@ public class main {
 				} // else pas valide
 			} // else liste pas vide
 		} // while liste Remplie
-		revenirAuMenu();
+		texteRevenirAuMenu();
 		Clavier.lireString();
 		return liste;
 	} // viderListe
@@ -167,10 +186,9 @@ public class main {
 				break;
 			case '2':
 				listeTaches = ajouterTache(listeTaches, compteTaches); // retourner une nouvelle version de listeTache
-																		// après modification
 				break;
 			case '3':
-				listeTaches = supprimerTaches(listeTaches, compteTaches);
+				listeTaches = supprimerTaches(listeTaches);
 				break;
 			case '4':
 				listeTaches = viderListe(listeTaches);

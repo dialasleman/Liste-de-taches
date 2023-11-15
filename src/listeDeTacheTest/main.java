@@ -99,7 +99,6 @@ public class main {
 		String tacheASupprimer;
 		String substring1;
 		String substring2;
-		String listeForm = "";
 		boolean fin = false;
 
 		System.out.println(msgSuppTache + msgChosesAFaire + liste);
@@ -107,15 +106,24 @@ public class main {
 		while (!fin) {
 			System.out.println(msgTacheASupp);
 			tacheASupprimer = Clavier.lireString();
+			int longueurListe = tacheASupprimer.length();
+			for (int i = 0; i < longueurListe; i++) {
+				char character = tacheASupprimer.charAt(i);
+				String characterS = "" + character;
+				if (!characterS.contains("1") && !characterS.contains("2") && !characterS.contains("3")
+						&& !characterS.contains("4") && !characterS.contains("5") && !characterS.contains("6")
+						&& !characterS.contains("7") && !characterS.contains("8") && !characterS.contains("9")) {
+					System.out.println(
+							"Erreur, le numero doit etre entre " + nbmin + " et " + nbmax + "... Recommencez !\n");
+				}
+			}
 			if (tacheASupprimer == "") {
 				fin = false;
-				break;
-			}
-			// TODO: gere si l'utilisateur entre 2bc
-			else if ((!tacheASupprimer.contains("1") && !tacheASupprimer.contains("2") && !tacheASupprimer.contains("3")
-					&& !tacheASupprimer.contains("4") && !tacheASupprimer.contains("5")
-					&& !tacheASupprimer.contains("6") && !tacheASupprimer.contains("7")
-					&& !tacheASupprimer.contains("8") && !tacheASupprimer.contains("9"))) {
+			} else if ((!tacheASupprimer.contains("1") && !tacheASupprimer.contains("2")
+					&& !tacheASupprimer.contains("3") && !tacheASupprimer.contains("4")
+					&& !tacheASupprimer.contains("5") && !tacheASupprimer.contains("6")
+					&& !tacheASupprimer.contains("7") && !tacheASupprimer.contains("8")
+					&& !tacheASupprimer.contains("9"))) {
 				System.out
 						.println("Erreur, le numero doit etre entre " + nbmin + " et " + nbmax + "... Recommencez !\n");
 			} else {
@@ -129,14 +137,19 @@ public class main {
 					debut2 = liste.indexOf(int1Format);
 					substring1 = liste.substring(debut1, fin1);
 					substring2 = liste.substring(debut2);
-					for (int i = 0; i < substring2.length(); i++) {
-						char c = liste.charAt(i);
-						if (c == '3') {
-							char gt = '2';
-							substring2 = substring2.replace(c, gt);
-							System.out.println("sub2: " + substring2);
+					int longueur = substring2.length();
+					for (int i = 0; i < longueur; i++) {
+						char numListe = substring2.charAt(i);
+						String hello = "" + numListe;
+						if (hello.contains("1") || hello.contains("2") || hello.contains("3") || hello.contains("4")
+								|| hello.contains("5") || hello.contains("6") || hello.contains("7")
+								|| hello.contains("8") || hello.contains("9")) {
+							int numListeI = Integer.parseInt(hello);
+							numListeI = numListeI - 1;
+							String numListeS = "" + numListeI;
+							char numListeIncr = numListeS.charAt(0);
+							substring2 = substring2.replace(numListe, numListeIncr);
 						}
-
 					}
 
 				} else {
@@ -152,7 +165,7 @@ public class main {
 
 		}
 
-		return listeForm;
+		return liste;
 
 	}// supprimerTache
 

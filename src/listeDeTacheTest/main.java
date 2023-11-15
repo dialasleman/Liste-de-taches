@@ -23,14 +23,28 @@ public class main {
 		System.out.println(msgMenu);
 	}
 
+	public static int compterTaches(String liste) {
+
+		int compte = 0;
+		int tailleListe = liste.length();
+		for (int i = 0; i < tailleListe; i++) {
+			char c = liste.charAt(i);
+			if (c == '\n') {
+				compte++;
+			}
+		}
+		return compte;
+	}
+
 	// Cette méthode permet d'ajouter des tâches
-	public static String ajouterTache(String liste, int compte) {
+	public static String ajouterTache(String liste) {
 		String msgAjoutTache = "Tache a ajouter (<ENTREE> pour terminer): ";
 		String msgAccueilTache = "\n-- AJOUTER TACHE(S) --\n";
 		String msgErrTache = "Erreur, la tache doit contenir entre 3 et 80 caracteres inclusivement... Recommencez !";
 		String tacheLue;
 		int nbCaracteresMin = 3;
 		int nbCaracteresMax = 80;
+		int compte = compterTaches(liste);
 		boolean finAjoutTache = false;
 		System.out.println(msgAccueilTache);
 		while (!(finAjoutTache)) {
@@ -82,10 +96,10 @@ public class main {
 		int debut1;
 		int fin1;
 		int debut2;
-		int fin2;
 		String tacheASupprimer;
 		String substring1;
 		String substring2;
+		String listeForm = "";
 		boolean fin = false;
 
 		System.out.println(msgSuppTache + msgChosesAFaire + liste);
@@ -93,12 +107,11 @@ public class main {
 		while (!fin) {
 			System.out.println(msgTacheASupp);
 			tacheASupprimer = Clavier.lireString();
-
 			if (tacheASupprimer == "") {
 				fin = false;
 				break;
 			}
-
+			// TODO: gere si l'utilisateur entre 2bc
 			else if ((!tacheASupprimer.contains("1") && !tacheASupprimer.contains("2") && !tacheASupprimer.contains("3")
 					&& !tacheASupprimer.contains("4") && !tacheASupprimer.contains("5")
 					&& !tacheASupprimer.contains("6") && !tacheASupprimer.contains("7")
@@ -111,23 +124,35 @@ public class main {
 				String int1Format = "" + int1;
 
 				if (liste.contains(int1Format)) {
-					debut1 = liste.indexOf("1");
+					debut1 = liste.indexOf(liste.charAt(0));
 					fin1 = liste.indexOf(tacheASupprimer);
 					debut2 = liste.indexOf(int1Format);
-					fin2 = liste.lastIndexOf("\n");
 					substring1 = liste.substring(debut1, fin1);
-					substring2 = liste.substring(debut2, fin2);
-					System.out.println("Liste updated: \n" + substring1 + substring2);
+					substring2 = liste.substring(debut2);
+					for (int i = 0; i < substring2.length(); i++) {
+						char c = liste.charAt(i);
+						if (c == '3') {
+							char gt = '2';
+							substring2 = substring2.replace(c, gt);
+							System.out.println("sub2: " + substring2);
+						}
+
+					}
+
 				} else {
-					debut1 = liste.indexOf("1");
+					debut1 = liste.indexOf(liste.charAt(0));
 					fin1 = liste.indexOf(tacheASupprimer);
 					substring1 = liste.substring(debut1, fin1);
-					System.out.println("Liste updated: \n" + substring1);
+					substring2 = "";
+
 				}
+				liste = substring1 + substring2;
+				System.out.println(liste);
 			}
-			
+
 		}
-		return liste;
+
+		return listeForm;
 
 	}// supprimerTache
 
@@ -171,7 +196,6 @@ public class main {
 
 	public static void main(String[] args) {
 		String listeTaches = "";
-		int compteTaches = 0;
 
 		boolean finDuProgramme = false;
 		while (!finDuProgramme) {
@@ -185,7 +209,7 @@ public class main {
 				afficherListe(listeTaches);
 				break;
 			case '2':
-				listeTaches = ajouterTache(listeTaches, compteTaches); // retourner une nouvelle version de listeTache
+				listeTaches = ajouterTache(listeTaches); // retourner une nouvelle version de listeTache
 				break;
 			case '3':
 				listeTaches = supprimerTaches(listeTaches);

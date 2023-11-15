@@ -100,32 +100,33 @@ public class main {
 		String substring1;
 		String substring2;
 		boolean fin = false;
-
+		boolean inputValide = true;
 		System.out.println(msgSuppTache + msgChosesAFaire + liste);
+		//TODO: boolean pour input de l'utilisateur set à true or false, vérifier qd utilisateur entre chiffre vs lettres à plusieurs reprises
 
 		while (!fin) {
-			System.out.println(msgTacheASupp);
-			tacheASupprimer = Clavier.lireString();
-			int longueurListe = tacheASupprimer.length();
-			for (int i = 0; i < longueurListe; i++) {
-				char character = tacheASupprimer.charAt(i);
-				String characterS = "" + character;
-				if (!characterS.contains("1") && !characterS.contains("2") && !characterS.contains("3")
-						&& !characterS.contains("4") && !characterS.contains("5") && !characterS.contains("6")
-						&& !characterS.contains("7") && !characterS.contains("8") && !characterS.contains("9")) {
-					System.out.println(
-							"Erreur, le numero doit etre entre " + nbmin + " et " + nbmax + "... Recommencez !\n");
+			do {
+				System.out.println(msgTacheASupp);
+				tacheASupprimer = Clavier.lireString();
+
+				for (int i = 0; i < tacheASupprimer.length(); i++) {
+					char character = tacheASupprimer.charAt(i);
+					if (character != '1' && character != '2' && character != '3' && character != '4' && character != '5'
+							&& character != '6' && character != '7' && character != '8' && character != '9') {
+						 inputValide = false;
+
+					}
+
 				}
-			}
+				if (inputValide == false) {
+					System.out.println(
+							"Erreur, le numero doit etre entre " + nbmin + " et " + nbmax + "... Recommencez !");
+				}
+				
+			} while (inputValide == false);
+			
 			if (tacheASupprimer == "") {
 				fin = false;
-			} else if ((!tacheASupprimer.contains("1") && !tacheASupprimer.contains("2")
-					&& !tacheASupprimer.contains("3") && !tacheASupprimer.contains("4")
-					&& !tacheASupprimer.contains("5") && !tacheASupprimer.contains("6")
-					&& !tacheASupprimer.contains("7") && !tacheASupprimer.contains("8")
-					&& !tacheASupprimer.contains("9"))) {
-				System.out
-						.println("Erreur, le numero doit etre entre " + nbmin + " et " + nbmax + "... Recommencez !\n");
 			} else {
 				int int1 = Integer.parseInt(tacheASupprimer);
 				int1++;

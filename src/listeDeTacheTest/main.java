@@ -9,15 +9,36 @@
 package listeDeTacheTest;
 
 public class main {
+	final static String MSG_PRESENTATION = "Ce logiciel permet de maintenir \nune liste de choses a faire.\n";
+	final static String MSG_ERR = "\nErreur, choix du menu invalide... Recommencez!";
+	final static String MSG_LISTE_VIDE = "\n===============\n" + "CHOSES A FAIRE\n" + "===============\n"
+			+ "\nAUCUN ITEM DANS LA LISTE";
+	final static String MSG_SOLL = "Entrez votre choix : ";
+	final static String MSG_RETOUR_MENU = "\nAppuyez sur <ENTREE> pour revenir au menu... ";
+	final static String MSG_MENU = "----" + "\nMENU\n" + "----\n" + "1. Afficher liste\n" + "2. Ajouter tache(s)\n"
+			+ "3. Supprimer taches\n" + "4. Vider liste\n" + "5. Quitter le programme\n";
+	final static String MSG_AJOUT_TACHE = "Tache a ajouter (<ENTREE> pour terminer): ";
+	final static String MSG_ACCUEIL_TACHE = "\n-- AJOUTER TACHE(S) --\n";
+	final static String MSG_ERR_TACHE = "Erreur, la tache doit contenir entre 3 et 80 caracteres inclusivement... Recommencez !";
+	final static String MSG_SUPP_TACHE = "\n-- SUPPRIMER TACHE(S) --\n";
+	final static String MSG_CHOSES_A_FAIRE = "\n===============\n" + "CHOSES A FAIRE\n" + "===============\n";
+	final static String MSG_TACHE_A_SUPP = "Numero de la tache a supprimer (<ENTREE> pour terminer) : ";
+	final static String MSG_VIDER_LISTE = "\n-- VIDER LA LISTE --\n" + "\n" + "AUCUN ITEM DANS LA LISTE";
+	final static String MSG_VERIF_VIDER = "\nVoulez-vous vraiment vider la liste (O)ui ou (N)on ? ";
+	final static String MSG_ERR_VIDER = "Erreur, vous devez repondre par O ou N... Recommencez !";
+	final static String MSG_OPP_ANN = "\nOperation annulee.\n";
+	final static String MSG_LISTE_VIDEE = "\nTous les items ont ete supprimes de la liste.\n";
+
 	// Cette méthode affiche un message d'erreur
 	public static void messageErreur() {
-		String msgErr = "\nErreur, choix du menu invalide... Recommencez!";
-		System.out.println(msgErr);
+		System.out.println(MSG_ERR);
 	}
 
-	public static void lireFichier(String liste){
-		liste = TP2Utils.lireFichier(); //lit le fichier listeTaches.txt et retourne son contenu
+	public static String lireFichier(String liste) {
+		liste = TP2Utils.lireFichier(); // lit le fichier listeTaches.txt et retourne son contenu
+		return liste;
 	}
+
 	// Cette méthode ne retourne rien, mais prend la liste à sauvegarder en
 	// paramètre.
 	public static void sauvegarder(String liste) {
@@ -26,34 +47,30 @@ public class main {
 
 	// Cette méthode affiche un message de liste vide
 	public static void messageListeVide() {
-		String msgListeVide = "\n===============\n" + "CHOSES A FAIRE\n" + "===============\n"
-				+ "\nAUCUN ITEM DANS LA LISTE";
-		System.out.println(msgListeVide);
+
+		System.out.println(MSG_LISTE_VIDE);
 	}
 
 	// Cette méthode affiche un message de sollicitation
 	public static void messageSollicitation() {
-		String msgSoll = "Entrez votre choix : ";
-		System.out.print(msgSoll);
+		System.out.print(MSG_SOLL);
 	}
 
 	// Cette méthode affiche un message de retour au menu principal
 	public static void texteRevenirAuMenu() {
-		String revenirAuMenu = "\nAppuyez sur <ENTREE> pour revenir au menu... ";
-		System.out.println(revenirAuMenu);
+		System.out.println(MSG_RETOUR_MENU);
 	}
 
 	// Cette méthode affiche le menu principal
 	public static String afficherMenu() {
 		boolean choixMenuValide = false;
 		String choixMenuLu = "";
-		String msgMenu = "----" + "\nMENU\n" + "----\n" + "1. Afficher liste\n" + "2. Ajouter tache(s)\n"
-				+ "3. Supprimer taches\n" + "4. Vider liste\n" + "5. Quitter le programme\n";
+
 		// Vérifier que l'utilisateur entre un chiffre entre 1 et 5 sans texte
 		// supplémentaire
 		do {
 			choixMenuValide = true;
-			System.out.println(msgMenu);
+			System.out.println(MSG_MENU);
 			messageSollicitation();
 			choixMenuLu = Clavier.lireString();
 			// Vérifier chaque caractère du input de l'utilisateur en incrémentant i pour
@@ -98,18 +115,15 @@ public class main {
 	// Cette méthode permet d'ajouter des tâches dans la liste en retournant la
 	// liste modifiée
 	public static String ajouterTache(String liste) {
-		String msgAjoutTache = "Tache a ajouter (<ENTREE> pour terminer): ";
-		String msgAccueilTache = "\n-- AJOUTER TACHE(S) --\n";
-		String msgErrTache = "Erreur, la tache doit contenir entre 3 et 80 caracteres inclusivement... Recommencez !";
 		String tacheLue;
 		int nbCaracteresMin = 3;
 		int nbCaracteresMax = 80;
 		int compte = compterTaches(liste);
 		boolean finAjoutTache = false;
 
-		System.out.println(msgAccueilTache);
+		System.out.println(MSG_ACCUEIL_TACHE);
 		while (!(finAjoutTache)) {
-			System.out.print(msgAjoutTache);
+			System.out.print(MSG_ACCUEIL_TACHE);
 			tacheLue = Clavier.lireString();
 			if (tacheLue.equals("")) { // Si ce que l'utilisateur entre est nul, finir d'ajouter des tâches
 				finAjoutTache = true;
@@ -118,18 +132,17 @@ public class main {
 				liste += compte + ". " + tacheLue + "\n"; // Liste modifiée formée des numéros de tâches et du input
 															// d'utilisateur
 			} else {
-				System.out.println(msgErrTache);
+				System.out.println(MSG_ERR_TACHE);
 			}
 		}
 		return liste;
 	}
 
 	static void afficherListe(String liste) { // Cette méthode permet d'afficher la liste de tâche
-		String msgChosesAFaire = "\n===============\n" + "CHOSES A FAIRE\n" + "===============\n";
 		if (liste.equals("")) {
 			messageListeVide();
 		} else {
-			System.out.println(msgChosesAFaire);
+			System.out.println(MSG_CHOSES_A_FAIRE);
 			System.out.println(liste);
 		}
 		texteRevenirAuMenu();
@@ -137,9 +150,8 @@ public class main {
 	}
 
 	public static String supprimerTaches(String liste) { // Cette méthode permet de supprimer des tâches
-		String msgSuppTache = "\n-- SUPPRIMER TACHE(S) --\n";
 		if (liste == "") { // Liste vide
-			System.out.print(msgSuppTache);
+			System.out.print(MSG_SUPP_TACHE);
 			messageListeVide();
 			texteRevenirAuMenu();
 			Clavier.lireFinLigne();
@@ -152,8 +164,6 @@ public class main {
 		int debut2;
 		int tacheForm;
 		int numListeInt;
-		String msgChosesAFaire = "\n===============\n" + "CHOSES A FAIRE\n" + "===============\n\n";
-		String msgTacheASupp = "Numero de la tache a supprimer (<ENTREE> pour terminer) : ";
 		String tacheASupprimer;
 		String substring1;
 		String substring2;
@@ -167,17 +177,17 @@ public class main {
 		boolean listeVide = false;
 		while (!listeVide) {
 			if (liste == "") {
-				System.out.print(msgSuppTache);
+				System.out.print(MSG_SUPP_TACHE);
 				messageListeVide();
 				texteRevenirAuMenu();
 				Clavier.lireFinLigne();
 				listeVide = true;
 			} else {
-				System.out.println(msgSuppTache + msgChosesAFaire + liste);
+				System.out.println(MSG_SUPP_TACHE + MSG_CHOSES_A_FAIRE + liste);
 				while (!fin) {
 					do {
 						inputValide = true;
-						System.out.print(msgTacheASupp);
+						System.out.print(MSG_TACHE_A_SUPP);
 						tacheASupprimer = Clavier.lireString();
 						for (int i = 0; i < tacheASupprimer.length(); i++) {// Vérifier chaque caractère du input de
 																			// l'utilisateur selon la place de (int i)
@@ -193,10 +203,10 @@ public class main {
 							messageRespectBornes(liste);
 						}
 					} while (!inputValide);
-					
+
 					if (tacheASupprimer == "") {
 						fin = true;
-						listeVide=true;
+						listeVide = true;
 					} else if ((tacheForm = Integer.parseInt(tacheASupprimer)) < nbrMin
 							|| (tacheForm = Integer.parseInt(tacheASupprimer)) > nbrMax) {
 						messageRespectBornes(liste);
@@ -236,7 +246,8 @@ public class main {
 								}
 							}
 							nbrMax = nbrMax - 1; // Borne diminue car une tache est supprimée
-						} else {
+						} // FIN DU IF
+						else {
 							// Si l'utilisateur supprime la derniere tache de la liste
 							debut1 = liste.indexOf(liste.charAt(0));
 							fin1 = liste.indexOf(tacheASupprimer);
@@ -265,29 +276,24 @@ public class main {
 	// Cette méthode permet de vider la liste de tâche
 	public static String viderListe(String liste) {
 		String repVider;
-		String msgViderListe = "\n-- VIDER LA LISTE --\n" + "\n" + "AUCUN ITEM DANS LA LISTE";
-		String msgVerifVider = "\nVoulez-vous vraiment vider la liste (O)ui ou (N)on ? ";
-		String msgErrVider = "Erreur, vous devez repondre par O ou N... Recommencez !";
-		String msgOppAnn = "\nOperation annulee.\n";
-		String msgListeVidee = "\nTous les items ont ete supprimes de la liste.\n";
 		boolean fini = false;
 
 		while (!fini) {
 			if (liste == "") {
-				System.out.println(msgViderListe);
+				System.out.println(MSG_VIDER_LISTE);
 				fini = true;
 			} else {
-				System.out.print(msgVerifVider);
+				System.out.print(MSG_VERIF_VIDER);
 				repVider = Clavier.lireString();
 				if (repVider.equalsIgnoreCase("o")) {
 					liste = "";
-					System.out.print(msgListeVidee);
+					System.out.print(MSG_LISTE_VIDEE);
 					fini = true;
 				} else if (repVider.equalsIgnoreCase("n")) {
-					System.out.print(msgOppAnn);
+					System.out.print(MSG_OPP_ANN);
 					fini = true;
 				} else {
-					System.out.println(msgErrVider);
+					System.out.println(MSG_ERR_VIDER);
 				}
 			}
 		}
@@ -297,7 +303,8 @@ public class main {
 	}
 
 	// Cette méthode permet de quitter le programme
-	public static void quitterProgramme() {
+	public static void quitterProgramme(String liste) {
+		sauvegarder(liste);
 		String msgFinProg = "\n\nF I N   N O R M A L E   D U   P R O G R A M M E\n";
 		System.out.println(msgFinProg);
 	}
@@ -306,8 +313,8 @@ public class main {
 	public static void main(String[] args) {
 		String listeTaches = "";
 		String choixMenuLu = "";
-		System.out.println("Ce logiciel permet de maintenir \nune liste de choses a faire.\n");
-		boolean finDuProgramme = false;  
+		System.out.println(MSG_PRESENTATION);
+		boolean finDuProgramme = false;
 		while (!finDuProgramme) {
 			lireFichier(listeTaches);
 			choixMenuLu = afficherMenu();
@@ -327,8 +334,7 @@ public class main {
 				break;
 
 			case "5":
-				quitterProgramme();
-				sauvegarder(listeTaches);
+				quitterProgramme(listeTaches);
 				finDuProgramme = true;
 				break;
 			default:

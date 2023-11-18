@@ -29,11 +29,6 @@ public class main {
 	final static String MSG_OPP_ANN = "\nOperation annulee.\n";
 	final static String MSG_LISTE_VIDEE = "\nTous les items ont ete supprimes de la liste.\n";
 
-	// Cette méthode affiche un message d'erreur
-	public static void messageErreur() {
-		System.out.println(MSG_ERR);
-	}
-
 	public static String lireFichier(String liste) {
 		liste = TP2Utils.lireFichier(); // lit le fichier listeTaches.txt et retourne son contenu
 		return liste;
@@ -43,49 +38,6 @@ public class main {
 	// paramètre.
 	public static void sauvegarder(String liste) {
 		TP2Utils.sauvegarder(liste);
-	}
-
-	// Cette méthode affiche un message de liste vide
-	public static void messageListeVide() {
-
-		System.out.println(MSG_LISTE_VIDE);
-	}
-
-	// Cette méthode affiche un message de sollicitation
-	public static void messageSollicitation() {
-		System.out.print(MSG_SOLL);
-	}
-
-	// Cette méthode affiche un message de retour au menu principal
-	public static void texteRevenirAuMenu() {
-		System.out.println(MSG_RETOUR_MENU);
-	}
-
-	// Cette méthode affiche le menu principal
-	public static String afficherMenu() {
-		boolean choixMenuValide = false;
-		String choixMenuLu = "";
-
-		// Vérifier que l'utilisateur entre un chiffre entre 1 et 5 sans texte
-		// supplémentaire
-		do {
-			choixMenuValide = true;
-			System.out.println(MSG_MENU);
-			messageSollicitation();
-			choixMenuLu = Clavier.lireString();
-			// Vérifier chaque caractère du input de l'utilisateur en incrémentant i pour
-			// représenter chaque caractère du input
-			for (int i = 0; i < choixMenuLu.length(); i++) {
-				char character = choixMenuLu.charAt(i);
-				if (character != '1' && character != '2' && character != '3' && character != '4' && character != '5') {
-					choixMenuValide = false;
-				}
-			}
-			if (!choixMenuValide) {
-				messageErreur();
-			}
-		} while (!choixMenuValide);
-		return choixMenuLu;
 	}
 
 	// Cette méthode permet de compter les tâches dans la liste de tâches, en
@@ -110,6 +62,32 @@ public class main {
 		int nbrMax = compterTaches(liste);
 		String msgBornes = "\nErreur, le numero doit etre entre " + nbrMin + " et " + nbrMax + "... Recommencez !";
 		System.out.println(msgBornes);
+	}
+
+	// Cette méthode affiche le menu principal
+	public static String afficherMenu() {
+		boolean choixMenuValide = false;
+		String choixMenuLu = "";
+		// Vérifier que l'utilisateur entre un chiffre entre 1 et 5 sans texte
+		// supplémentaire
+		do {
+			choixMenuValide = true;
+			System.out.println(MSG_MENU);
+			System.out.print(MSG_SOLL);
+			choixMenuLu = Clavier.lireString();
+			// Vérifier chaque caractère du input de l'utilisateur en incrémentant i pour
+			// représenter chaque caractère du input
+			for (int i = 0; i < choixMenuLu.length(); i++) {
+				char character = choixMenuLu.charAt(i);
+				if (character != '1' && character != '2' && character != '3' && character != '4' && character != '5') {
+					choixMenuValide = false;
+				}
+			}
+			if (!choixMenuValide) {
+				System.out.println(MSG_ERR);
+			}
+		} while (!choixMenuValide);
+		return choixMenuLu;
 	}
 
 	// Cette méthode permet d'ajouter des tâches dans la liste en retournant la
@@ -140,20 +118,20 @@ public class main {
 
 	static void afficherListe(String liste) { // Cette méthode permet d'afficher la liste de tâche
 		if (liste.equals("")) {
-			messageListeVide();
+			System.out.println(MSG_LISTE_VIDE);
 		} else {
 			System.out.println(MSG_CHOSES_A_FAIRE);
 			System.out.println(liste);
 		}
-		texteRevenirAuMenu();
+		System.out.println(MSG_RETOUR_MENU);
 		Clavier.lireFinLigne();
 	}
 
 	public static String supprimerTaches(String liste) { // Cette méthode permet de supprimer des tâches
 		if (liste == "") { // Liste vide
 			System.out.print(MSG_SUPP_TACHE);
-			messageListeVide();
-			texteRevenirAuMenu();
+			System.out.println(MSG_LISTE_VIDE);
+			System.out.println(MSG_RETOUR_MENU);
 			Clavier.lireFinLigne();
 			return liste;
 		}
@@ -178,8 +156,8 @@ public class main {
 		while (!listeVide) {
 			if (liste == "") {
 				System.out.print(MSG_SUPP_TACHE);
-				messageListeVide();
-				texteRevenirAuMenu();
+				System.out.println(MSG_LISTE_VIDE);
+				System.out.println(MSG_RETOUR_MENU);
 				Clavier.lireFinLigne();
 				listeVide = true;
 			} else {
@@ -257,8 +235,8 @@ public class main {
 						}
 						liste = substring1 + substring2;
 						if (liste == "") {
-							messageListeVide();
-							texteRevenirAuMenu();
+							System.out.println(MSG_LISTE_VIDE);
+							System.out.println(MSG_RETOUR_MENU);
 							Clavier.lireFinLigne();
 							fin = true;
 							listeVide = true;
@@ -297,7 +275,7 @@ public class main {
 				}
 			}
 		}
-		texteRevenirAuMenu();
+		System.out.println(MSG_RETOUR_MENU);
 		Clavier.lireFinLigne();
 		return liste;
 	}
@@ -338,7 +316,7 @@ public class main {
 				finDuProgramme = true;
 				break;
 			default:
-				messageErreur();
+				System.out.println(MSG_ERR);
 			}
 		}
 	}

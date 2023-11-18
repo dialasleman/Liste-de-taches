@@ -1,4 +1,4 @@
-1. Vaisselle
-2. Lavage
-3. Poubelles
-4. Sport
+1. Lavage
+2. Manger
+3. Chien
+4. Famille

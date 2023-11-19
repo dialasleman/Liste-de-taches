@@ -11,7 +11,7 @@ package listeDeTacheTest;
 
 public class main {
 	final static String MSG_PRESENTATION = "Ce logiciel permet de maintenir \nune liste de choses a faire.\n";
-	final static String MSG_ERR = "\nErreur, choix du menu invalide... Recommencez!";
+	final static String MSG_ERR = "\nErreur, choix du menu invalide... Recommencez!\n";
 	final static String MSG_LISTE_VIDE = "\n===============\n" + "CHOSES A FAIRE\n" + "===============\n"
 			+ "\nAUCUN ITEM DANS LA LISTE";
 	final static String MSG_SOLL = "Entrez votre choix : ";
@@ -20,7 +20,7 @@ public class main {
 			+ "3. Supprimer taches\n" + "4. Vider liste\n" + "5. Quitter le programme\n";
 	final static String MSG_AJOUT_TACHE = "Tache a ajouter (<ENTREE> pour terminer): ";
 	final static String MSG_ACCUEIL_TACHE = "\n-- AJOUTER TACHE(S) --\n";
-	final static String MSG_ERR_TACHE = "Erreur, la tache doit contenir entre 3 et 80 caracteres inclusivement... Recommencez !";
+	final static String MSG_ERR_TACHE = "\nErreur, la tache doit contenir entre 3 et 80 caracteres inclusivement... Recommencez !";
 	final static String MSG_SUPP_TACHE = "\n-- SUPPRIMER TACHE(S) --\n";
 	final static String MSG_CHOSES_A_FAIRE = "\n===============\n" + "CHOSES A FAIRE\n" + "===============\n";
 	final static String MSG_TACHE_A_SUPP = "Numero de la tache a supprimer (<ENTREE> pour terminer) : ";
@@ -44,30 +44,40 @@ public class main {
 	// Cette methode permet de compter les taches dans la liste de taches, en
 	// retournant un nouveau compte a chaque modification
 	public static int compterTaches(String liste) {
-		int compte = 0;
+		int compteDesTaches = 0;
+		char caractereDeListe;
 		int tailleListe = liste.length();
 		for (int i = 0; i < tailleListe; i++) { // Se fier sur le nombre de caracteres \n pour avoir le nombre de taches
-			char c = liste.charAt(i);
-			if (c == '\n') {
-				compte++;
+			caractereDeListe = liste.charAt(i);
+			if (caractereDeListe == '\n') {
+				compteDesTaches++;
 			}
 		}
-		return compte;
+		return compteDesTaches;
 	}
 
 	// Cette methode permet de verifier que l'utilisateur entre un chiffre entre les
 	// bornes de la premiere tache a la derniere tache en se fiant a la methode
 	// compterTaches()
 	public static void messageRespectBornes(String liste) {
-		int nbrMin = 1;
-		int nbrMax = compterTaches(liste);
-		String msgBornes = "\nErreur, le numero doit etre entre " + nbrMin + " et " + nbrMax + "... Recommencez !";
+		int numPremiereTache = 1;
+		int numDerniereTache = compterTaches(liste);
+		String msgBornes = "\nErreur, le numero doit etre entre " + numPremiereTache + " et " + numDerniereTache
+				+ "... Recommencez !";
 		System.out.println(msgBornes);
+	}
+
+	// Cette méthode affiche un message pour annoncer que la liste est vide
+	public static void listeVide() {
+		System.out.println(MSG_LISTE_VIDE);
+		System.out.println(MSG_RETOUR_MENU);
+		Clavier.lireFinLigne();
 	}
 
 	// Cette methode affiche le menu principal
 	public static String afficherMenu() {
 		boolean choixMenuValide = false;
+		char caractereInputLu;
 		String choixMenuLu = "";
 		// Verifier que l'utilisateur entre un chiffre entre 1 et 5 sans texte
 		// supplementaire
@@ -79,8 +89,9 @@ public class main {
 			// Verifier chaque caractère du input de l'utilisateur en incrementant i pour
 			// representer chaque caractere du input
 			for (int i = 0; i < choixMenuLu.length(); i++) {
-				char character = choixMenuLu.charAt(i);
-				if (character != '1' && character != '2' && character != '3' && character != '4' && character != '5') {
+				caractereInputLu = choixMenuLu.charAt(i);
+				if (caractereInputLu != '1' && caractereInputLu != '2' && caractereInputLu != '3'
+						&& caractereInputLu != '4' && caractereInputLu != '5') {
 					choixMenuValide = false;
 				}
 			}
@@ -105,6 +116,7 @@ public class main {
 			System.out.print(MSG_AJOUT_TACHE);
 			tacheLue = Clavier.lireString();
 			if (tacheLue.equals("")) { // Si ce que l'utilisateur entre est nul, finir d'ajouter des taches
+				System.out.print("\n");
 				finAjoutTache = true;
 			} else if (tacheLue.length() >= nbCaracteresMin && tacheLue.length() <= nbCaracteresMax && tacheLue != "") {
 				compte++;
@@ -122,40 +134,39 @@ public class main {
 			System.out.println(MSG_LISTE_VIDE);
 		} else {
 			System.out.println(MSG_CHOSES_A_FAIRE);
-			System.out.println(liste);
+			System.out.print(liste);
 		}
 		System.out.println(MSG_RETOUR_MENU);
 		Clavier.lireFinLigne();
 	}
 
 	public static String supprimerTaches(String liste) { // Cette methode permet de supprimer des taches
-		int nbrMax = compterTaches(liste);
-		int nbrMin = 1;
-		int debut1;
-		int fin1;
-		int debut2;
+		int numPremiereTache = 1;
+		int numDerniereTache = compterTaches(liste);
+		int debutSubst1;
+		int finSubst1;
+		int debutSubst2;
 		int tacheForm;
-		int numListeInt;
+		int numTacheInt;
 		String tacheASupprimer;
 		String substring1;
 		String substring2;
 		String tacheSuivante;
-		String numListeString;
+		String numTacheString;
 		String numListeFinal;
-		char numListe;
+		char numTacheChar;
 		char numListeDecr;
+		char numTacheASupp;
 		boolean fin = false;
 		boolean inputValide = true;
 		boolean listeVide = false;
 		while (!listeVide) {
 			if (liste == "") {
 				System.out.print(MSG_SUPP_TACHE);
-				System.out.println(MSG_LISTE_VIDE);
-				System.out.println(MSG_RETOUR_MENU);
-				Clavier.lireFinLigne();
+				listeVide();
 				listeVide = true;
 			} else {
-				System.out.println(MSG_SUPP_TACHE + MSG_CHOSES_A_FAIRE + liste);
+				System.out.println(MSG_SUPP_TACHE + MSG_CHOSES_A_FAIRE + liste + "\n");
 				while (!fin) {
 					do {
 						inputValide = true;
@@ -164,10 +175,10 @@ public class main {
 						for (int i = 0; i < tacheASupprimer.length(); i++) {// Verifier chaque caractere du input de
 																			// l'utilisateur selon la place de (int i)
 																			// dans l'input
-							char character = tacheASupprimer.charAt(i);
-							if (character != '1' && character != '2' && character != '3' && character != '4'
-									&& character != '5' && character != '6' && character != '7' && character != '8'
-									&& character != '9') {
+							numTacheASupp = tacheASupprimer.charAt(i);
+							if (numTacheASupp != '1' && numTacheASupp != '2' && numTacheASupp != '3'
+									&& numTacheASupp != '4' && numTacheASupp != '5' && numTacheASupp != '6'
+									&& numTacheASupp != '7' && numTacheASupp != '8' && numTacheASupp != '9') {
 								inputValide = false;
 							}
 						}
@@ -175,12 +186,12 @@ public class main {
 							messageRespectBornes(liste);
 						}
 					} while (!inputValide);
-
 					if (tacheASupprimer == "") {
+						System.out.print("\n");
 						fin = true;
 						listeVide = true;
-					} else if ((tacheForm = Integer.parseInt(tacheASupprimer)) < nbrMin
-							|| (tacheForm = Integer.parseInt(tacheASupprimer)) > nbrMax) {
+					} else if ((tacheForm = Integer.parseInt(tacheASupprimer)) < numPremiereTache
+							|| (tacheForm = Integer.parseInt(tacheASupprimer)) > numDerniereTache) {
 						messageRespectBornes(liste);
 					} else {
 						// Si l'utilisateur supprime la premier tache de la liste ou une tache du
@@ -190,52 +201,49 @@ public class main {
 						tacheSuivante = "" + tacheForm;
 						if (liste.contains(tacheSuivante)) {
 							// Premiere partie de la liste: du debut jusqu'a la tache a supprimer
-							debut1 = liste.indexOf(liste.charAt(0));
-							fin1 = liste.indexOf(tacheASupprimer);
-							substring1 = liste.substring(debut1, fin1);
+							debutSubst1 = liste.indexOf(liste.charAt(0));
+							finSubst1 = liste.indexOf(tacheASupprimer);
+							substring1 = liste.substring(debutSubst1, finSubst1);
 							// Deuxieme partie de la liste: de la tache suivante a la fin
-							debut2 = liste.indexOf(tacheSuivante);
-							substring2 = liste.substring(debut2);
+							debutSubst2 = liste.indexOf(tacheSuivante);
+							substring2 = liste.substring(debutSubst2);
 							// Trouver tous les numéros dans la liste en incrementant i pour verifier chaque
 							// caractere de la deuxieme partie de la liste
 							for (int i = 0; i < substring2.length(); i++) {
-								numListe = substring2.charAt(i);
-								numListeString = "" + numListe;
-								if (numListeString.contains("1") || numListeString.contains("2")
-										|| numListeString.contains("3") || numListeString.contains("4")
-										|| numListeString.contains("5") || numListeString.contains("6")
-										|| numListeString.contains("7") || numListeString.contains("8")
-										|| numListeString.contains("9")) {
+								numTacheChar = substring2.charAt(i);
+								numTacheString = "" + numTacheChar;
+								if (numTacheString.contains("1") || numTacheString.contains("2")
+										|| numTacheString.contains("3") || numTacheString.contains("4")
+										|| numTacheString.contains("5") || numTacheString.contains("6")
+										|| numTacheString.contains("7") || numTacheString.contains("8")
+										|| numTacheString.contains("9")) {
 									// Si la liste contient un numero, mettre ce numero en int, puis l'ajuster selon
 									// la numerotation de la liste en le decrementant
-									numListeInt = Integer.parseInt(numListeString);
-									numListeInt = numListeInt - 1;
-									numListeFinal = "" + numListeInt;
+									numTacheInt = Integer.parseInt(numTacheString);
+									numTacheInt = numTacheInt - 1;
+									numListeFinal = "" + numTacheInt;
 									numListeDecr = numListeFinal.charAt(0);
 									// Remplacer la numerotation par une numerotation decrementee pour la deuxieme
 									// partie de la liste
-									substring2 = substring2.replace(numListe, numListeDecr);
+									substring2 = substring2.replace(numTacheChar, numListeDecr);
 								}
 							}
-							nbrMax = nbrMax - 1; // Borne diminue car une tache est supprimee
+							numDerniereTache = numDerniereTache - 1; // Borne diminue car une tache est supprimee
 						} else {
 							// Si l'utilisateur supprime la derniere tache de la liste
-							debut1 = liste.indexOf(liste.charAt(0));
-							fin1 = liste.indexOf(tacheASupprimer);
-							substring1 = liste.substring(debut1, fin1);
+							debutSubst1 = liste.indexOf(liste.charAt(0));
+							finSubst1 = liste.indexOf(tacheASupprimer);
+							substring1 = liste.substring(debutSubst1, finSubst1);
 							substring2 = "";
-							nbrMax = nbrMax - 1;
+							numDerniereTache = numDerniereTache - 1;
 						}
 						liste = substring1 + substring2;
 						if (liste == "") {
-							System.out.println(MSG_LISTE_VIDE);
-							System.out.println(MSG_RETOUR_MENU);
-							Clavier.lireFinLigne();
+							listeVide();
 							fin = true;
 							listeVide = true;
 						} else {
-							System.out.println("\n" + "===============\n" + "CHOSES A FAIRE\n" + "===============\n");
-							System.out.println(liste);
+							System.out.println(MSG_CHOSES_A_FAIRE + liste);
 						}
 					}
 				}
@@ -246,7 +254,7 @@ public class main {
 
 	// Cette methode permet de vider la liste de tache
 	public static String viderListe(String liste) {
-		String repVider;
+		String repViderListe;
 		boolean fini = false;
 
 		while (!fini) {
@@ -255,12 +263,12 @@ public class main {
 				fini = true;
 			} else {
 				System.out.print(MSG_VERIF_VIDER);
-				repVider = Clavier.lireString();
-				if (repVider.equalsIgnoreCase("o")) {
+				repViderListe = Clavier.lireString();
+				if (repViderListe.equalsIgnoreCase("o")) {
 					liste = "";
 					System.out.print(MSG_LISTE_VIDEE);
 					fini = true;
-				} else if (repVider.equalsIgnoreCase("n")) {
+				} else if (repViderListe.equalsIgnoreCase("n")) {
 					System.out.print(MSG_OPP_ANN);
 					fini = true;
 				} else {

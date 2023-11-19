@@ -1,4 +1,5 @@
-1. Lavage
-2. Manger
-3. Chien
-4. Famille
+1. Epicerie
+2. Vaisselle
+3. Sport
+4. Souper
+5. Lavage
